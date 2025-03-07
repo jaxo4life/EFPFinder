@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/EFPFinder/static/css/main.17232524.css",
+    "main.js": "/EFPFinder/static/js/main.e3197eea.js",
+    "index.html": "/EFPFinder/index.html",
+    "main.17232524.css.map": "/EFPFinder/static/css/main.17232524.css.map",
+    "main.e3197eea.js.map": "/EFPFinder/static/js/main.e3197eea.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.17232524.css",
+    "static/js/main.e3197eea.js"
+  ]
+}
