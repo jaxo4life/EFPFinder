@@ -1,0 +1,15 @@
+{
+  "short_name": "EFPFinder",
+  "name": "EFPFinder",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e1e1ee3",
+  "theme_color": "#fff"
+}
