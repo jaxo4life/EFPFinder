@@ -1,29 +1,34 @@
-const CACHE_NAME = 'efpfinder-cache-v3';
+const CACHE_NAME = 'efpfinder-cache-v1';
 
 // 监听 install 事件并缓存静态资源
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return fetch('/asset-manifest.json') // 读取 React 生成的资源清单
-        .then((response) => response.json())
-        .then((assets) => {
-          const urlsToCache = [
-            '/',
-            '/index.html',
-            '/manifest.json',
-            '/favicon.ico',
-            '/pwalogo.png',
-            ...Object.values(assets.files)
-          ];
-          return cache.addAll(urlsToCache);
-        });
-    })
+    fetch('/asset-manifest.json') // 读取 React 资源清单
+      .then(response => response.json())
+      .then((assets) => {
+        const urlsToCache = new Set([
+          '/',
+          '/index.html',
+          '/manifest.json',
+          '/favicon.ico',
+          '/pwalogo.png',
+          ...Object.values(assets.files) // 可能包含重复的 index.html
+        ]);
+
+        return caches.open(CACHE_NAME).then((cache) => cache.addAll([...urlsToCache]));
+      })
   );
-  self.skipWaiting(); // 强制跳过等待，立即激活
 });
 
 // 监听 fetch 事件，优先使用缓存
 self.addEventListener('fetch', (event) => {
+  const requestUrl = event.request.url;
+
+  // 过滤掉 Chrome 扩展和非 GET 请求
+  if (requestUrl.startsWith('chrome-extension://') || event.request.method !== 'GET') {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((response) => {
       return response || fetch(event.request).then((networkResponse) => {
@@ -32,7 +37,7 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         });
       });
-    }).catch(() => caches.match('/404.html')) // 断网时返回 404 页面
+    }).catch(() => caches.match('/404.html')) // 断网时返回 404
   );
 });
 
