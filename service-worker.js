@@ -1,4 +1,4 @@
-const CACHE_NAME = 'efpfinder-cache-v3';
+const CACHE_NAME = 'efpfinder-cache-v4';
 
 // 监听 install 事件并缓存静态资源
 self.addEventListener('install', (event) => {
