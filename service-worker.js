@@ -1,4 +1,4 @@
-const CACHE_NAME = 'efpfinder-cache-v3';
+const CACHE_NAME = 'efpfinder-cache-v4';
 
 // 监听 install 事件并缓存静态资源
 self.addEventListener('install', (event) => {
@@ -25,8 +25,13 @@ self.addEventListener('fetch', (event) => {
   const requestUrl = event.request.url;
 
   // 过滤掉 Chrome 扩展和非 GET 请求
-  if (requestUrl.startsWith('chrome-extension://') || event.request.method !== 'GET') {
+  if (requestUrl.startsWith('chrome-extension://')) {
     return;
+  }
+
+  // **不缓存 API 请求**（假设你的 API 以 `/api/` 开头）
+  if (requestUrl.startsWith('http')) {
+    return event.respondWith(fetch(event.request)); // 直接从网络获取最新数据
   }
 
   event.respondWith(
